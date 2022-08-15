@@ -12,6 +12,7 @@ describe('CoursesCardListComponent', () => {
 
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
+  let el: DebugElement;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -21,21 +22,26 @@ describe('CoursesCardListComponent', () => {
       .then(() => { // Need to use waitForAsync else rest of test suite is not waiting for this. Will get component undefined when asserting toBeTruthy.
         fixture = TestBed.createComponent(CoursesCardListComponent);
         component = fixture.componentInstance;
+        el = fixture.debugElement;
       })
   }));
 
 
   it("should create the component", () => {
-
     expect(component).toBeTruthy();
-    console.log(`🚀 ~ component`, component);// Not initialized in time
-
   });
 
 
   it("should display the course list", () => {
 
-    pending();
+    component.courses = setupCourses();
+    const cards = el.queryAll(By.css('.course-card'));
+    // .forEach((card, index) => {
+    //   const course = component.courses[index];
+    //   expect(card.nativeElement.textContent).toContain(course.description);
+    // });
+    expect(cards).toBeTruthy("No course cards found");
+    expect(cards.length).toBe(12, "unexpected number of courses");
 
   });
 
