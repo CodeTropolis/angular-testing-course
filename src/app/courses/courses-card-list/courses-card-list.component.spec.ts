@@ -10,7 +10,6 @@ import {setupCourses} from '../common/setup-test-data';
 
 
 
-
 describe('CoursesCardListComponent', () => {
 
 
