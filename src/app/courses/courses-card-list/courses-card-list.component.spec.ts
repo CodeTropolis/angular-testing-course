@@ -36,10 +36,6 @@ describe('CoursesCardListComponent', () => {
 
     component.courses = setupCourses();
     const cards = el.queryAll(By.css('.course-card'));
-    // .forEach((card, index) => {
-    //   const course = component.courses[index];
-    //   expect(card.nativeElement.textContent).toContain(course.description);
-    // });
     expect(cards).toBeTruthy("No course cards found");
     expect(cards.length).toBe(12, "unexpected number of courses");
 
