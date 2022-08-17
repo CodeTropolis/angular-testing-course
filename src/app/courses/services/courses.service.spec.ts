@@ -16,7 +16,7 @@ describe('CoursesService', () => {
         httpTestingController = TestBed.inject(HttpTestingController);
     });
  
-    xit('should find all courses', () => {
+    it('should find all courses', () => {
         coursesService.findAllCourses().subscribe(courses => {
             expect(courses).toBeTruthy();
             expect(courses.length).toBe(12 ,"incorrect number of courses");
