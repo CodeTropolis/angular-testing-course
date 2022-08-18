@@ -28,6 +28,6 @@ fdescribe("Async Testing Examples", () => {
                 expect(test).toBeTruthy();
             }, 1000); 
             // Resolve error: 1 timer still in queue by using tick()
-            tick(1000); // Call within fakAsync zone only.
+            tick(1000); // Call within fakeAsync zone only.
         }));
     });
