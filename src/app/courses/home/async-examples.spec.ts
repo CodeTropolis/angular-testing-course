@@ -1,4 +1,4 @@
-import { fakeAsync, tick } from "@angular/core/testing";
+import { fakeAsync, flushMicrotasks, tick } from "@angular/core/testing";
 
 fdescribe("Async Testing Examples", () => {
     // it('Async test example using Jasmine done()', () => {
@@ -31,10 +31,10 @@ fdescribe("Async Testing Examples", () => {
             tick(1000); // Call within fakeAsync zone only.
         }));
 
-        fit('Async test example - Promise', (() => {
+        xit('Async test example - Promise', (() => {
             let test = false;
-           // Promises go into micro task queue
-           // setTimeout is a macro taskt
+           // Promises go into micro task queue.
+           // setTimeout is a macro task.
            setTimeout(()=> {
             console.log('setTimeout 1')
            });
@@ -54,5 +54,20 @@ fdescribe("Async Testing Examples", () => {
 
         }));
 
+        fit('Async test example - Promise + setTimeout()', fakeAsync(() => {
+            let counter = 0;
+            Promise.resolve().then(() => {
+                counter+=10;
+                //expect(counter).toBe(10);
+                setTimeout(() => {
+                    counter+=1;
+                }, 1000);
+            })
+            expect(counter).toBe(0);
+            flushMicrotasks(); // Flush the micro task queue.
+            expect(counter).toBe(10);
+            tick(1000);
+            expect(counter).toBe(11);
+        }));
 
     });
