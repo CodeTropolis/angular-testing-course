@@ -100,6 +100,7 @@ fdescribe('HomeComponent', () => {
   }));
   // Same as above but using waitForAsync. Not as convenient as fakeAsync.
   // With fakeAsync, we have control over the emptying of the micro task queue.
+  // However, waitForAsync, unlike fakeAsync, supports HTTP calls.
   it("should display advanced courses when tab clicked", waitForAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
