@@ -38,12 +38,12 @@ fdescribe('HomeComponent', () => {
 
   }));
 
-  it("should create the component", () => {
+  xit("should create the component", () => {
     expect(component).toBeTruthy();
   });
 
 
-  it("should display only beginner courses", () => {
+  xit("should display only beginner courses", () => {
     // Happens synchronously. The mock implementation of CoursesService returns data immediately.
     // ?? Not asserting beginner courses. We could pass in in advancedCourses and this test will still pass.
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
@@ -53,7 +53,7 @@ fdescribe('HomeComponent', () => {
   });
 
 
-  it("should display only advanced courses", () => {
+  xit("should display only advanced courses", () => {
     coursesService.findAllCourses.and.returnValue(of(advancedCourses));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css(".mat-tab-label"));
@@ -61,7 +61,7 @@ fdescribe('HomeComponent', () => {
   });
 
   // ?This is a state that cannot exist for the user as only one tab at a time can be displayed
-  it("should display both tabs", () => {
+  xit("should display both tabs", () => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css(".mat-tab-label"));
@@ -85,7 +85,7 @@ fdescribe('HomeComponent', () => {
 
   });
 
-  it("should display advanced courses when tab clicked", fakeAsync(() => {
+  xit("should display advanced courses when tab clicked", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css(".mat-tab-label"));
@@ -97,6 +97,22 @@ fdescribe('HomeComponent', () => {
     const cardTitles = el.queryAll(By.css('.mat-card-title'));
     expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
     expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+  }));
+  // Same as above but using waitForAsync. Not as convenient as fakeAsync.
+  // With fakeAsync, we have control over the emptying of the micro task queue.
+  it("should display advanced courses when tab clicked", waitForAsync(() => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css(".mat-tab-label"));
+    click(tabs[1]);
+    fixture.detectChanges(); 
+    // With waitForAsync, we cannot call flush()
+    fixture.whenStable().then(() => {
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+      expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
+      console.log(cardTitles[0].nativeElement.textContent)
+      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+    });
   }));
 
 });
