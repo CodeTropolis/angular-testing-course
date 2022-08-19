@@ -3,7 +3,7 @@ import { of } from "rxjs";
 import {delay} from 'rxjs/operators'
 
 fdescribe("Async Testing Examples", () => {
-    xit('Async test example using Jasmine done()', () => {
+    xit('Async test example using setTimeout()', () => {
         let test = false;
         setTimeout(() => {
             test = true;
@@ -72,7 +72,7 @@ fdescribe("Async Testing Examples", () => {
         expect(counter).toBe(11);
     }));
 
-    xit('Async text - Observable', () => {
+    xit('Async text - synchronous observable', () => {
         let test = false;
         console.log('Creating Observable');
         const test$ = of(test);
@@ -83,7 +83,7 @@ fdescribe("Async Testing Examples", () => {
         expect(test).toBe(true); // Test passes
     });
     
-    xit('Async text - Observable', () => {
+    xit('Async text - async observable (delay)', () => {
         let test = false;
         console.log('Creating Observable');
         const test$ = of(test).pipe(delay(1000));// Now we have an observable that is not synchronous.
@@ -94,7 +94,7 @@ fdescribe("Async Testing Examples", () => {
         expect(test).toBe(true); // Test fails
     });
     // Fix
-    it('Async text - Observable', fakeAsync(() => {
+    xit('Async text - Observable', fakeAsync(() => {
         let test = false;
         console.log('Creating Observable');
         const test$ = of(test).pipe(delay(1000)); // Now we have an observable that is not synchronous.
