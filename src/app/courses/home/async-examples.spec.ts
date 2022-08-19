@@ -83,7 +83,7 @@ fdescribe("Async Testing Examples", () => {
         expect(test).toBe(true); // Test passes
     });
     
-    xit('Async text - async observable (delay)', () => {
+    xit('Async text - async observable (delay) this will fail', () => {
         let test = false;
         console.log('Creating Observable');
         const test$ = of(test).pipe(delay(1000));// Now we have an observable that is not synchronous.
@@ -94,7 +94,7 @@ fdescribe("Async Testing Examples", () => {
         expect(test).toBe(true); // Test fails
     });
     // Fix
-    xit('Async text - Observable', fakeAsync(() => {
+    xit('Async text - async Observable fixed', fakeAsync(() => {
         let test = false;
         console.log('Creating Observable');
         const test$ = of(test).pipe(delay(1000)); // Now we have an observable that is not synchronous.
