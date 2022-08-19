@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, waitForAsync} from '@angular/core/testing';
 import {CoursesModule} from '../courses.module';
 import {DebugElement} from '@angular/core';
 import {HomeComponent} from './home.component';
@@ -8,7 +8,7 @@ import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('HomeComponent', () => {
+fdescribe('HomeComponent', () => {
 
   let fixture: ComponentFixture<HomeComponent>;
   let component:HomeComponent;
@@ -82,7 +82,7 @@ describe('HomeComponent', () => {
       const cardTitles = el.queryAll(By.css('.mat-card-title'));
       expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
       expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
-      done(); // Test still fails for me. The test succeeds in Lecture 26 around 7:55
+      done(); 
     }, 500)
 
   });
