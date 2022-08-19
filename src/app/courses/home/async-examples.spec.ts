@@ -30,4 +30,29 @@ fdescribe("Async Testing Examples", () => {
             // Resolve error: 1 timer still in queue by using tick()
             tick(1000); // Call within fakeAsync zone only.
         }));
+
+        fit('Async test example - Promise', (() => {
+            let test = false;
+           // Promises go into micro task queue
+           // setTimeout is a macro taskt
+           setTimeout(()=> {
+            console.log('setTimeout 1')
+           });
+           setTimeout(()=> {
+            console.log('setTimeout 2')
+           });
+           Promise.resolve().then(() => { // Both promises execute prior to all the setTimeouts
+            console.log('Promise 1 resolved')
+           })
+           setTimeout(() => {
+            console.log('setTimeout 3')
+           })
+           Promise.resolve().then(() => {
+            console.log('Promise 2 resolved')
+            return Promise;
+           }).then(() => console.log('then on the Promise returned from Promise 2'))
+
+        }));
+
+
     });
