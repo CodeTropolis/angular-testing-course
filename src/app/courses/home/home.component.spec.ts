@@ -7,6 +7,7 @@ import {setupCourses} from '../common/setup-test-data';
 import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { click } from '../common/test-utils';
 
 fdescribe('HomeComponent', () => {
 
@@ -69,7 +70,7 @@ fdescribe('HomeComponent', () => {
   });
 
  // done: DoneFn = Lecture 26 around 6:00
-  it("should display advanced courses when tab clicked", (done: DoneFn) => {
+  xit("should display advanced courses when tab clicked", (done: DoneFn) => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css(".mat-tab-label"));
@@ -78,14 +79,25 @@ fdescribe('HomeComponent', () => {
     // first title in Beginners as the DOM wasn't updated until we ran detectChanges()
     // Test still fails.  The tab switch is performing an async operation (requestAnimationFrame()) due to the animation.
     fixture.detectChanges(); 
-    setTimeout(()=> {
-      const cardTitles = el.queryAll(By.css('.mat-card-title'));
-      expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
-      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
-      done(); 
-    }, 500)
+    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+    expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
 
   });
+
+  it("should display advanced courses when tab clicked", fakeAsync(() => {
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css(".mat-tab-label"));
+    click(tabs[1]);
+    // Need  fixture.detectChanges() else the test will think we are looking for the 
+    // first title in Beginners as the DOM wasn't updated until we ran detectChanges()
+    fixture.detectChanges(); 
+    flush();  // Make sure task queue is completely empty prior to running assertions.
+    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+    expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles.");
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+  }));
 
 });
 
