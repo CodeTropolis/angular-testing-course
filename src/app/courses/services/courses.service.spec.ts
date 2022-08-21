@@ -2,6 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { CoursesService } from "./courses.service";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { COURSES } from "../../../../server/db-data";
+import { Course } from "../model/course";
 
 fdescribe("CourseService", () => {
 
@@ -35,12 +36,40 @@ fdescribe("CourseService", () => {
 
        // Specify the data that should be returning.
        // We don't need the back end server (localhost:9000) to be running.
-       // the mock http request will simulate a 
-       // response only when flush is called. 
+       // the mock http request will simulate a response only when flush is called. 
        // This response will be passed to the subscribe block of findAllCourses.
        req.flush({payload: Object.values(COURSES)})
        // ? hmmm, without req.flush(...) the test still passes although the 
        // console.log logs nothing in the subscribe block.
     });
+
+    it('should retrieve course by id', () => {
+        coursesService.findCourseById(12).subscribe(course => {
+            expect(course).toBeTruthy();
+            expect(course.id).toBe(12);
+        });
+        const req = httpTestingController.expectOne('/api/courses/12');
+        expect(req.request.method).toEqual("GET");
+        req.flush(COURSES[12]);
+    });
+
+    it('should save course data', () => {
+        const changes:Partial<Course> = {titles:{description: 'Testing Course'}}
+        coursesService.saveCourse(12, changes)
+            .subscribe(course => {
+                expect(course.id).toBe(12);
+            });
+        const req = httpTestingController.expectOne('/api/courses/12');
+        expect(req.request.method).toEqual("PUT");
+        expect(req.request.body.titles.description).toEqual(changes.titles.description);
+        req.flush({
+            ...COURSES[12],
+            ...changes
+        })
+    });
+
+    afterEach(() => {
+        httpTestingController.verify();
+    })
 
 });
